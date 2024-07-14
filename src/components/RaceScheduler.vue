@@ -9,7 +9,7 @@
           <div class="text-lg font-semibold">Race {{ race.id }}</div>
           <ul class="mt-2 space-y-1">
             <li v-for="horse in race.horses" :key="horse.id">
-              Horse {{ horse.id }} (Condition: {{ horse.condition }})
+              {{ horse.name }} (Condition: {{ horse.condition }})
             </li>
           </ul>
         </li>
