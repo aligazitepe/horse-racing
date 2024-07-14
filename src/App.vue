@@ -8,27 +8,17 @@ import PhaserGame from './components/game/PhaserGame.vue';
 import Tabs from './components/MainTabs.vue';
 
 const tabs = ref(['RaceScheduler', 'RaceResults']);
-
-const changeScene = () => {
-
-  const scene = toRaw(phaserRef.value.scene);
-
-  if (scene) {
-    //  Call the changeScene method defined in the `MainMenu`, `Game` and `GameOver` Scenes
-    scene.changeScene();
-  }
-
-}
 </script>
-
 <template>
-  <div class="w-screen overflow-hidden flex flex-row  ">
+  <div class="w-screen h-screen flex flex-row justify-around mt-5 ">
     <Horses />
-    <div class="space-y-4">
+    <div class=" flex items-center p-5 rounded-lg relative">
       <!-- <PhaserGame ref="phaserRef" @current-active-scene="currentScene" /> -->
-      <PhaserGame ref="phaserRef" />
+      <div class="w-[808px] h-[608px] absolute border-8 border-black rounded-lg translate-x-[-2px] pointer-events-none">
+      </div>
+      <PhaserGame ref="phaserRef" class="" />
     </div>
-    <Tabs :tabs="tabs" class="max-h-screen overflow-y-scroll">
+    <Tabs :tabs="tabs" class="h-screen overflow-y-scroll">
       <template #RaceScheduler>
         <RaceScheduler />
       </template>
@@ -36,8 +26,6 @@ const changeScene = () => {
         <RaceResults />
       </template>
     </Tabs>
-
-
   </div>
 </template>
 
