@@ -1,4 +1,3 @@
-// src/store/index.ts
 import { defineStore } from 'pinia';
 
 interface Horse {
@@ -10,11 +9,13 @@ interface Horse {
 interface Race {
   id: number;
   horses: Horse[];
+  results: Horse[];
 }
 
 interface RootState {
   horses: Horse[];
   races: Race[];
+  currentRaceIndex: number | null;
   colorPalette: { [key: number]: string };
 }
 
@@ -22,6 +23,7 @@ export const useMainStore = defineStore('main', {
   state: (): RootState => ({
     horses: [],
     races: [],
+    currentRaceIndex: null,
     colorPalette: {
       1: "#1F77B4",  // Blue
       2: "#FF7F0E",  // Orange
@@ -56,24 +58,49 @@ export const useMainStore = defineStore('main', {
         });
       }
       this.horses = horses;
+      console.log("Horses initialized:", this.horses);
     },
     generateRaceSchedule() {
       const races: Race[] = [];
       const numRaces = 6;
       for (let i = 1; i <= numRaces; i++) {
-        const selectedHorses = [];
+        const selectedHorses: Horse[] = [];
         const horsePool = [...this.horses];
         while (selectedHorses.length < 10) {
           const randomIndex = Math.floor(Math.random() * horsePool.length);
           selectedHorses.push(horsePool.splice(randomIndex, 1)[0]);
         }
-        races.push({ id: i, horses: selectedHorses });
+        races.push({ id: i, horses: selectedHorses, results: [] });
       }
       this.races = races;
+      this.currentRaceIndex = 0;
+      console.log("Race schedule generated:", this.races);
     },
+    startNextRace() {
+      if (this.currentRaceIndex !== null && this.currentRaceIndex < this.races.length) {
+        const currentRace = this.races[this.currentRaceIndex];
+      }
+    },
+    finishRace({data}:{data:{id:number,color:string,condition:number}}) {
+        if (this.currentRaceIndex !== null && this.currentRaceIndex <= this.races.length) {
+            const currentRace = this.races[this.currentRaceIndex];
+            currentRace.results = data;
+            console.log(currentRace)
+            this.currentRaceIndex++;
+          }
+    }
   },
   getters: {
     getHorses: (state) => state.horses,
     getRaces: (state) => state.races,
+    getCurrentRace: (state) => {
+      if (state.currentRaceIndex !== null && state.currentRaceIndex < state.races.length) {
+        return state.races[state.currentRaceIndex];
+      }
+      return null;
+    },
+    getRaceResults: (state) => (raceId: number) => {
+      return state.races.find(race => race.id === raceId)?.results || [];
+    },
   },
 });
