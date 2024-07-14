@@ -10,10 +10,9 @@ import Tabs from './components/MainTabs.vue';
 const tabs = ref(['RaceScheduler', 'RaceResults']);
 </script>
 <template>
-  <div class="w-screen h-screen flex flex-row justify-around mt-5 ">
+  <div class="w-[98vw] flex flex-row justify-around mt-5 ">
     <Horses />
-    <div class=" flex items-center p-5 rounded-lg relative">
-      <!-- <PhaserGame ref="phaserRef" @current-active-scene="currentScene" /> -->
+    <div class=" flex items-center p-5 rounded-lg relative h-[800px]">
       <div class="w-[808px] h-[608px] absolute border-8 border-black rounded-lg translate-x-[-2px] pointer-events-none">
       </div>
       <PhaserGame ref="phaserRef" class="" />
