@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4">
+    <div class="p-4 max-h-screen overflow-y-scroll">
       <h2 class="text-2xl font-bold mb-4">Race Results</h2>
       <div v-if="races.length > 0">
         <div v-for="race in races" :key="race.id" class="p-4 bg-white rounded-lg shadow-md mb-4">

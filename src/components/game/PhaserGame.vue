@@ -18,9 +18,7 @@ import { useMainStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import Phaser from 'phaser';
 import { EventBus } from './EventBus';
-import type { Sprite } from 'pixi.js';
 
-// Save the current scene instance
 const scene = ref();
 const game = ref();
 
@@ -31,8 +29,11 @@ const { getCurrentRace, currentRaceIndex, races } = storeToRefs(store);
 
 const currentRace = computed(() => getCurrentRace.value);
 
-const startNextRace = () => {
-  store.startNextRace();
+const startNextRace = async () => {
+  await store.startNextRace();
+  if (currentRace.value) {
+    currentRace.value.started = true;
+  }
 };
 
 const createGame = () => {
@@ -42,8 +43,8 @@ const createGame = () => {
       Phaser.Scene.call(this, { key: 'MainScene' });
     },
     preload: function () {
-      this.load.image('horse', '/assets/star.png'); // Load horse image
-      this.load.image('background', '/assets/bg.png'); // Load background image
+      this.load.image('horse', '/assets/star.png');
+      this.load.image('background', '/assets/bg.png');
       this.load.spritesheet('character', '/assets/horse_test.png', {
         frameWidth: 64,
         frameHeight: 64
@@ -71,13 +72,11 @@ const createGame = () => {
       });
 
       this.horses = currentRace.value?.horses.map((horse, index) => {
-
         if (horse.name.split(" ")[1] === "Gazitepe") {
-          horse.condition = 1000
+          horse.condition = 1000;
         }
         const sprite = this.add.sprite(50, 100 + index * 50, 'character');
         const text = this.add.text(-150, 100 + index * 50, horse.name, { color: '#fff', fontSize: '16px' });
-        // const sprite = this.add.sprite(50, 100 + index * 50, 'horse');
         sprite.anims.play('run');
         const tintColor = Phaser.Display.Color.HexStringToColor(horse.color).color;
         sprite.setTint(tintColor);
@@ -92,17 +91,16 @@ const createGame = () => {
     update: function () {
       if (this.raceFinished) return;
 
-      this.horses.forEach(({ sprite, text }) => {
+      this.horses.forEach(({ sprite, text }: { sprite: any, text: any }) => {
         if (sprite.x >= this.finishLine) {
           if (!this.results.includes(sprite.horseData)) {
-
-            sprite.anims.play("stop")
+            sprite.anims.play("stop");
             const badge = this.add.rectangle(sprite.x + 40, sprite.y + 8, 20, 20, 0x000000);
             const text = this.add.text(sprite.x + 30, sprite.y, this.results.length + 1, { color: '#fff', fontSize: '16px' });
             Phaser.Display.Align.In.Center(text, badge);
 
             if (this.results.length == 0) {
-              sprite.anims.play("cheer")
+              sprite.anims.play("cheer");
             }
             this.results.push(sprite.horseData);
           }
@@ -133,18 +131,18 @@ const createGame = () => {
 };
 
 onMounted(() => {
-  watch(currentRace, () => {
-    if (currentRace.value) {
+  watch(currentRace, (newVal) => {
+    if (newVal?.started) {
       createGame();
     }
-  });
+  }, { immediate: true });
 
-  EventBus.on('current-scene-ready', (currentScene) => {
+  EventBus.on('current-scene-ready', (currentScene: any) => {
     emit('current-active-scene', currentScene);
     scene.value = currentScene;
   });
 
-  EventBus.on('race-finished', (results) => {
+  EventBus.on('race-finished', (results: any) => {
     console.log('Race finished:', results);
   });
 });

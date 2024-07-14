@@ -9,6 +9,7 @@ export interface Horse {
 
 interface Race {
   id: number
+  started:boolean
   horses: Horse[]
   results: Horse[]
 }
@@ -72,7 +73,7 @@ export const useMainStore = defineStore('main', {
           const randomIndex = Math.floor(Math.random() * horsePool.length)
           selectedHorses.push(horsePool.splice(randomIndex, 1)[0])
         }
-        races.push({ id: i, horses: selectedHorses, results: [] })
+        races.push({ id: i, horses: selectedHorses, results: [],started:false })
       }
       this.races = races
       this.currentRaceIndex = 0
@@ -80,7 +81,7 @@ export const useMainStore = defineStore('main', {
     },
     startNextRace() {
       if (this.currentRaceIndex !== null && this.currentRaceIndex < this.races.length) {
-        const currentRace = this.races[this.currentRaceIndex]
+        this.races[this.currentRaceIndex] = { ... this.races[this.currentRaceIndex], started: true }; // Update the entire object
       }
     },
     finishRace({ data }: { data: { id: number; color: string; condition: number; name: string }[] }) {
@@ -89,6 +90,7 @@ export const useMainStore = defineStore('main', {
         currentRace.results = data
         console.log(currentRace)
         this.currentRaceIndex++
+        this.startNextRace()
       }
     }
   },
