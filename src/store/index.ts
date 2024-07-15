@@ -61,7 +61,7 @@ export const useMainStore = defineStore('main', {
         })
       }
       this.horses = horses
-      console.log('Horses initialized:', this.horses)
+      // console.log('Horses initialized:', this.horses)
     },
     generateRaceSchedule() {
       const races: Race[] = []
@@ -77,7 +77,7 @@ export const useMainStore = defineStore('main', {
       }
       this.races = races
       this.currentRaceIndex = 0
-      console.log('Race schedule generated:', this.races)
+      // console.log('Race schedule generated:', this.races)
     },
     startNextRace() {
       if (this.currentRaceIndex !== null && this.currentRaceIndex < this.races.length) {

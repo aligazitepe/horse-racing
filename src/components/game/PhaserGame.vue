@@ -52,7 +52,7 @@ onMounted(() => {
   });
 
   EventBus.on('race-finished', (results: any) => {
-    console.log('Race finished:', results);
+    // console.log('Race finished:', results);
   });
 });
 

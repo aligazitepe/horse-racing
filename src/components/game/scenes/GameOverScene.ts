@@ -6,6 +6,7 @@ import { watch } from 'vue'
 
 export class GameOverScene extends Phaser.Scene {
   private races: any
+  store: any
   constructor() {
     super('GameOverScene')
   }
