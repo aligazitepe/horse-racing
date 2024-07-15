@@ -7,14 +7,14 @@ export interface Horse {
   condition: number
 }
 
-interface Race {
+export interface Race {
   id: number
-  started:boolean
+  started: boolean
   horses: Horse[]
   results: Horse[]
 }
 
-interface RootState {
+export interface RootState {
   horses: Horse[]
   races: Race[]
   currentRaceIndex: number | null
@@ -73,7 +73,7 @@ export const useMainStore = defineStore('main', {
           const randomIndex = Math.floor(Math.random() * horsePool.length)
           selectedHorses.push(horsePool.splice(randomIndex, 1)[0])
         }
-        races.push({ id: i, horses: selectedHorses, results: [],started:false })
+        races.push({ id: i, horses: selectedHorses, results: [], started: false })
       }
       this.races = races
       this.currentRaceIndex = 0
@@ -81,14 +81,17 @@ export const useMainStore = defineStore('main', {
     },
     startNextRace() {
       if (this.currentRaceIndex !== null && this.currentRaceIndex < this.races.length) {
-        this.races[this.currentRaceIndex] = { ... this.races[this.currentRaceIndex], started: true }; // Update the entire object
+        this.races[this.currentRaceIndex] = { ...this.races[this.currentRaceIndex], started: true } // Update the entire object
       }
     },
-    finishRace({ data }: { data: { id: number; color: string; condition: number; name: string }[] }) {
+    finishRace({
+      data
+    }: {
+      data: { id: number; color: string; condition: number; name: string }[]
+    }) {
       if (this.currentRaceIndex !== null && this.currentRaceIndex <= this.races.length) {
         const currentRace = this.races[this.currentRaceIndex]
         currentRace.results = data
-        console.log(currentRace)
         this.currentRaceIndex++
         this.startNextRace()
       }

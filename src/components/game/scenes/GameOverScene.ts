@@ -22,13 +22,15 @@ export class GameOverScene extends Phaser.Scene {
     this.add.text(400, 200, 'No more Races', { fontSize: '32px', color: '#fff' }).setOrigin(0.5)
 
     watch(this.races, (newVal) => {
-      console.log(newVal)
       if (newVal.length > 0) {
         this.scene.start('MainMenuScene')
       }
     })
     this.add
-      .text(400, 300, 'Generate a Schedule to start again', { fontSize: '24px', color: '#fff' })
+      .text(400, 300, 'Generate a Schedule to start the simulation', {
+        fontSize: '24px',
+        color: '#fff'
+      })
       .setOrigin(0.5)
 
     EventBus.emit('current-scene-ready', this)

@@ -1,7 +1,7 @@
 <template>
   <div class="w-[400px] max-h-[800px]">
     <div class="tabs">
-      <button v-for="tab in tabs" :key="String(tab)" :class="{ 'active-tab': tab === selectedTab }"
+      <button v-for="tab in tabs" :key="String(tab)" :class="{ 'active-tab': tab === selectedTab }" class="text-white"
         @click="selectTab(tab as string)">
         {{ tab }}
       </button>

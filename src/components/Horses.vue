@@ -1,6 +1,6 @@
 <template>
-  <div class="max-h-[800px] w-[350px] overflow-y-scroll">
-    <h2 class="text-2xl font-bold mb-4">Horses</h2>
+  <div class="max-h-[800px] w-[350px] overflow-y-scroll px-5">
+    <h2 class="text-2xl font-bold mb-4 text-white">Horses</h2>
     <ul class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
       <li v-for="horse in horses" :key="horse.id" class="p-4 bg-white rounded-lg shadow-md">
         <div class="flex flex-row items-center gap-2">
